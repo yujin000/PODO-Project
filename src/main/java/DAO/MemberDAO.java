@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import javax.naming.Context;
@@ -60,6 +61,52 @@ public class MemberDAO {
 		}
 
 	}
+	
+	public String getUserEmail(String email) throws Exception {
+		 String sql =
+				 "select email from member where email = ?"; 
+				 try (Connection con =
+				 this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql); )
+				 {
+				 pstat.setString(1, email); 
+				 
+				 try(ResultSet rs =pstat.executeQuery();){ 
+					 rs.next();
+					 return rs.getString("email"); 
+					 } } 
+    }
+	
+	   public boolean getUserEmailChecked(String email) throws Exception { 
+		   //사용자 이메일 검증, 검증 없이 사용하지 못하게 할것이기 때문에 이 함수가 필요
+		   String sql =
+					 "select emailchecked from member where email = ?"; 
+					 try (Connection con =
+					 this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql); )
+					 {
+					 pstat.setString(1, email); 
+					 
+					ResultSet rs =pstat.executeQuery();
+						 rs.next();
+						 return rs.getBoolean(1); 
+						  } 
+          }
+	   
+	   public int setUserEmailChecked(String email) throws Exception{ //이메일 인증을 완료해주는 함수
+           String sql = "UPDATE member SET emailchecked = true WHERE email = ?";    
+           try (Connection con =
+					 this.getConnection(); PreparedStatement pstat = con.prepareStatement(sql); )
+					 {          
+               pstat.setString(1, email);
+               int result = pstat.executeUpdate();
+               
+               con.commit();
+               con.close();
+				 return result;
+           
+           }
+      
+          }          
+	
 
 	public int delete() {
 		return 0;

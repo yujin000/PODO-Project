@@ -3,8 +3,8 @@
 <%@ page import="javax.mail.*"%>
 <%@ page import="java.util.Properties"%>
 <%@ page import="DAO.MemberDAO"%>
-<%@ page import="Util.SHA256"%>
-<%@ page import="Util.Gmail"%>
+<%@ page import="util.SHA256"%>
+<%@ page import="util.Gmail"%>
 <%@ page import="java.io.PrintWriter"%>
 <% 
 

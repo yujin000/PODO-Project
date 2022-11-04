@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="DTO.MemberDTO"%>
 <%@ page import="DAO.MemberDAO"%>
-<%@ page import="Util.SHA256"%>
+<%@ page import="util.SHA256"%>
 <%@ page import="java.io.PrintWriter"%>
 <% 
 	request.setCharacterEncoding("UTF-8");
@@ -10,7 +10,7 @@
 	String pw = null;
 
 	if(request.getParameter("email")!=null){
-		email = request.getParameter("Eamil");
+		email = request.getParameter("email");
 	}
 	if(request.getParameter("pw")!=null){
 		pw = request.getParameter("pw");
@@ -27,7 +27,7 @@
 	}
 	
 	MemberDAO dao = new MemberDAO();
-	int result = dao.signup(new MemberDTO(getSHA512(email),pw,null,null,null,null,null,null,null,SHA256.getSHA256(email),false));
+	int result = dao.signup(email, pw, nickname, name, phone);
 	/* email, pw, SHA256.getSHA256(email),false */
 	if(result == -1) {
 		
