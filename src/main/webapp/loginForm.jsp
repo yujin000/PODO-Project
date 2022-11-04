@@ -121,7 +121,7 @@
         <input type="text" name="pw" placeholder="password" />
         <button type="submit" id="loginBtn">로그인</button>
       </form>
-      <a href="InputForm.jsp">회원가입</a>
+      <a href="inputForm.jsp">회원가입</a>
       <a href="find.jsp">아이디/비밀번호 찾기</a>
     </div>
     <!-- <footer>

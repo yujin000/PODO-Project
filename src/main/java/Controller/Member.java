@@ -20,7 +20,7 @@ public class Member extends HttpServlet {
 		request.setCharacterEncoding("utf8");
 		// post 방식으로 보낼때, 한글 깨지는 것을 방지
 
-		String uri = request.getRequestURI();
+		String uri = request.getRequestURI();   
 		System.out.println(uri);
 
 		try {
@@ -62,10 +62,11 @@ public class Member extends HttpServlet {
 					 response.setContentType("text/html; charset=UTF-8"); 
 					 PrintWriter out = response.getWriter(); 
 					 out.println("<script language='javascript'>");
-					 out.println("alert('회원정보가 존재하지 않습니다.')"); 
+					 out.println("alert('회원정보가 존재하지 않습니다.')");
+					 out.println("location.href='loginForm.jsp'"); 
 					 out.println("</script>");
 					 out.flush(); 
-					 response.sendRedirect("error.jsp");
+//					 response.sendRedirect("index.jsp");
 					 
 					 }
 			}
@@ -73,6 +74,13 @@ public class Member extends HttpServlet {
 			else if (uri.equals("/logout.member")) {
 				request.getSession().invalidate();
 				response.sendRedirect("index.jsp");
+			}
+			else if(uri.equals("/emailDupleCheck.member")) {
+				String email = request.getParameter("email");
+				MemberDAO dao = new MemberDAO();
+				boolean result = dao.emailDupleCheck("email");
+				request.setAttribute("result", result);
+				request.getRequestDispatcher("inputForm.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

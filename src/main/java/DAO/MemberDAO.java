@@ -106,8 +106,21 @@ public class MemberDAO {
            }
       
           }          
-	
+	public boolean emailDupleCheck(String email) throws Exception{
+		String sql = "select * from member where email =?";
+		
+		try (Connection con = this.getConnection();
+				PreparedStatement pstat = con.prepareStatement(sql);
+				){
+			pstat.setString(1, email);
+			ResultSet rs = pstat.executeQuery();
+			
+			System.out.println(rs);
+			return rs.next();
 
+		}
+		
+	}
 	public int delete() {
 		return 0;
 	}

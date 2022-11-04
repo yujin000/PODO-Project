@@ -146,9 +146,11 @@ pageEncoding="UTF-8"%>
         <p>이메일</p>
         <input type="text" name="email" placeholder="email" id="email" />
         <p id="msg"></p>
+        <p>인증 메일을 전송중입니다... </p>
         <button onclick="emailAuthentication()" type="button" id="eamilAuthBtn" class="btnChk">인증번호 전송</button>
         <p>인증번호</p>
         <input type="text" name="password" id="number" placeholder="인증번호" />
+        <p>인증 번호가 틀렸습니다. </p>
         <button  type="submit" id="numberCheck">확인</button>
         <p id="msg"></p>
       </form>
