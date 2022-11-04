@@ -73,7 +73,7 @@
 							<img src="image/web/profile-default.jpg" alt="" /><span>${loginNickname}</span>
 						</div>
 						<ul class="tog">
-							<li><a href="#">마이페이지</a></li>
+							<li><a id="mypageBtn">마이페이지</a></li>
 							<c:choose>
 								<c:when test="${loginEmail eq 'podo@email.com'}">
 									<li><a href="/admin/adminIndex.jsp">관리자페이지</a></li>
@@ -81,7 +81,7 @@
 							</c:choose>
 							<li><a href="#">공지사항</a></li>
 							<li><a href="#">계정설정</a></li>
-							<li><a href="#">친구초대 </a></li>
+							<li><a id="modifyBtn">친구초대 </a></li>
 							<li><a href="logout.member">로그아웃</a></li>
 						</ul>
 					</c:when>
@@ -97,7 +97,7 @@
 			<div id="GNB">
 				<ul>
 					<li><a id="today">투데이</a></li>
-					<li><a id="chart">차트</a></li>
+					<li><a id="chart" href="/chart.music">차트</a></li>
 					<li><a href="#">보관함</a></li>
 					<li><a href="#">스테이션</a></li>
 					<li><a href="#">매거진</a></li>
@@ -118,16 +118,17 @@
 			<a href="" class="service">서비스 소개</a>
 		</div>
 
-		<iframe src="main.html" width="100%" height="100%"
-			style="display: block; padding-left: 230px" id="main"></iframe>
-
-		<iframe src="test.html" width="100%" height="100%"
-			style="display: none; padding-left: 230px" id="test"></iframe>
+		<iframe src="main.jsp" width="100%" height="100%"
+			style="display: block; padding-left: 230px" id="iframe"></iframe>
 
 		<div id="MusicControl">
 			
 			<div class="hidden">
 				<h1>hidden</h1>
+				<ul></ul>
+			</div>
+			<div class="gageBar">
+				<div class="gage"></div>
 			</div>
 			<div class="gageBar">
 				<div class="gage"></div>
@@ -153,7 +154,9 @@
 					<li><span class="material-symbols-rounded"> repeat </span></li>
 					<li><span class="material-symbols-rounded">
 							skip_previous </span></li>
-					<li><span class="material-symbols-rounded"> play_arrow
+					<li><span class="material-symbols-rounded" id="playBtn">
+					<audio id="playAudio"></audio>
+					play_arrow
 					</span></li>
 					<li><span class="material-symbols-rounded"> skip_next </span></li>
 					<li><span class="material-symbols-rounded"> replay </span></li>
@@ -192,7 +195,6 @@
 	</script>
 	<script>
 		// login page move action
-
 		$(".loginBtn").click(function() {
 			$("#loginPage").fadeIn(450).css("display", "block");
 			$("#test").css("display", "none");
@@ -200,21 +202,63 @@
 		});
 	</script>
 	<script>
-		// page move action
-		let today = document.getElementById("today");
-		let chart = document.getElementById("chart");
-
-		$(today).click(function() {
-			$("#main").fadeIn(450).css("display", "block");
-			$("#test").css("display", "none");
-			$("#loginPage").css("display", "none");
+		$("#chart").click(function() {
+			$("#iframe").attr("src", "test.jsp");
 		});
 
-		$(chart).click(function() {
-			$("#test").fadeIn(450).css("display", "block");
-			$("#main").css("display", "none");
-			$("#loginPage").css("display", "none");
+		$("#today").click(function() {
+			$("#iframe").attr("src", "main.jsp");
+		});
+
+		$("#mypageBtn").click(function() {
+			$("#iframe").attr("src", "mypage.jsp");
 		});
 	</script>
+	<script>
+    	// 목록페이지 전체 div값
+    	const musicListPage = document.querySelector(".hidden ul");
+    	musicListPage.setAttribute("id","변수확인용");
+    	// music list array
+    	let musicList = new Array();
+    		<c:forEach items="${musicChartList }" var="i">
+    			musicList.push({
+    				musicSeq : "${i.musicSeq}",
+    				musicName : "${i.musicName}",
+    				musicArtist : "${i.musicArtist}",
+    				musicAlbum : "${i.musicAlbum}",
+    				musicImg : "${i.musicImg}",
+    				musicMP3 : "${i.musicMp3}",
+    				musicChart : "${i.musicChart}",
+    				musicLylics : "${i.musicLylics}"
+    			})
+    		</c:forEach>
+    	// 현재 곡 번호 offset
+    	let musicIndex = 0;
+    	
+    	// PlayList 목록 출력하기
+    	for (let i=0; i<musicList.length; i++) {
+    		// 각 목록값이 들어갈 li 태그
+    		let li = `<li data-index="\${i+1}">
+    			<div>
+    				<div>\${musicList[i].musicName}</div>
+    				<div>\${musicList[i].musicArtist}</div>
+    				<div>\${musicList[i].musicAlbum}</div>
+    			</div>
+    			<audio class="audioList\${musicList[i].musicSeq}"
+    			src = "/audio/\${musicList[i].musicMp3}.mp3"></audio>
+    			</li>
+    		`;
+    		musicListPage.insertAdjacentHTML("beforeend",li);
+    	}
+    	
+    	// 재생 컨트롤러 구현
+    	const playAudio = document.querySelector("#playAudio");
+    	let playIndex = 0;
+    	
+    	playAudio.addEventListener("click",function(){
+    		playAudio.setAttribute("src","/audio/" + musicList[0].musicMp3 + ".mp3");
+    		playAudio.play();
+    	});
+    </script>
 </body>
 </html>
