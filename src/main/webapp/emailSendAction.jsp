@@ -9,11 +9,11 @@
 <% 
 
 	MemberDAO dao = new MemberDAO();
-	String userEmail = null;
-	if(session.getAttribute("userEmail") != null){
-		userEmail = (String) session.getAttribute("userEmail");
+	String email = null;
+	if(session.getAttribute("email") != null){
+		email = (String) session.getAttribute("email");
 	}
-	if(userEmail == null){
+	if(email == null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('로그인을 해주세요');");
@@ -22,32 +22,8 @@
 		script.close();
 		return;
 	}
-
-
-	request.setCharacterEncoding("UTF-8");
-	String userEmail = null;
-	String userPassword = null;
-
-	if(request.getParameter("userEmail")!=null){
-		userEmail = request.getParameter("userEamil");
-	}
-	if(request.getParameter("userPassword")!=null){
-		userPassword = request.getParameter("userPassword");
-	}
-	if( userEmail == null || userPassword == null){
-		PrintWriter script = response.getWriter();
-		script.println("<script>");
-		script.println("alert('입력이 안 된 사항이 있습니다.');");
-		script.println("history.back();");
-		script.println("</script>");
-		script.close();
-		return;
-		
-	}
-	
-	MemberDAO dao = new MemberDAO();
-	int result = dao.signup(new MemberDTO(userEmail,userPassword,null,null,null,null,null,null,null,SHA256.getSHA256(userEmail),false));
-	/* userEmail, userPassword, SHA256.getSHA256(userEmail),false */
+	boolean emailChecked = MemberDAO.getEmailChecked(email);
+	/* Email, Password, SHA256.getSHA256(Email),false */
 	if(result == -1) {
 		
 		PrintWriter script = response.getWriter();
@@ -58,7 +34,7 @@
 		script.close();
 		return;
 	}else {
-		session.setAttribute("userEmail", userEmail);
+		session.setAttribute("email", email);
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("location.href = 'eamilSendAction.jsp'");

@@ -125,11 +125,12 @@
 			style="display: none; padding-left: 230px" id="test"></iframe>
 
 		<div id="MusicControl">
-			<div class="gageBar">
-				<div class="gage"></div>
-			</div>
+			
 			<div class="hidden">
 				<h1>hidden</h1>
+			</div>
+			<div class="gageBar">
+				<div class="gage"></div>
 			</div>
 			<div class="controller">
 				<ul class="musicInfo">

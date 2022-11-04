@@ -6,16 +6,16 @@
 <%@ page import="java.io.PrintWriter"%>
 <% 
 	request.setCharacterEncoding("UTF-8");
-	String userEmail = null;
-	String userPassword = null;
+	String email = null;
+	String pw = null;
 
-	if(request.getParameter("userEmail")!=null){
-		userEmail = request.getParameter("userEamil");
+	if(request.getParameter("email")!=null){
+		email = request.getParameter("Eamil");
 	}
-	if(request.getParameter("userPassword")!=null){
-		userPassword = request.getParameter("userPassword");
+	if(request.getParameter("pw")!=null){
+		pw = request.getParameter("pw");
 	}
-	if( userEmail == null || userPassword == null){
+	if( email == null || pw == null){
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("alert('입력이 안 된 사항이 있습니다.');");
@@ -27,8 +27,8 @@
 	}
 	
 	MemberDAO dao = new MemberDAO();
-	int result = dao.signup(new MemberDTO(userEmail,userPassword,null,null,null,null,null,null,null,SHA256.getSHA256(userEmail),false));
-	/* userEmail, userPassword, SHA256.getSHA256(userEmail),false */
+	int result = dao.signup(new MemberDTO(getSHA512(email),pw,null,null,null,null,null,null,null,SHA256.getSHA256(email),false));
+	/* email, pw, SHA256.getSHA256(email),false */
 	if(result == -1) {
 		
 		PrintWriter script = response.getWriter();
@@ -39,7 +39,7 @@
 		script.close();
 		return;
 	}else {
-		session.setAttribute("userEmail", userEmail);
+		session.setAttribute("email", email);
 		PrintWriter script = response.getWriter();
 		script.println("<script>");
 		script.println("location.href = 'eamilSendAction.jsp'");
