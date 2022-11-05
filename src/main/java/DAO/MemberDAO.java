@@ -116,7 +116,6 @@ public class MemberDAO {
 			ResultSet rs = pstat.executeQuery();
 				return rs.next();
 			
-			
 		}
 		
 	}
