@@ -78,9 +78,11 @@ public class Member extends HttpServlet {
 			else if(uri.equals("/emailDupleCheck.member")) {
 				String email = request.getParameter("email");
 				MemberDAO dao = new MemberDAO();
-				boolean result = dao.emailDupleCheck("email");
-				request.setAttribute("result", result);
-				request.getRequestDispatcher("inputForm.jsp").forward(request, response);
+				boolean result = dao.emailDupleCheck(email);
+				System.out.println(email);
+				System.out.println(result);
+				PrintWriter out = response.getWriter();
+				out.print(result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

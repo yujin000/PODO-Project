@@ -114,10 +114,9 @@ public class MemberDAO {
 				){
 			pstat.setString(1, email);
 			ResultSet rs = pstat.executeQuery();
+				return rs.next();
 			
-			System.out.println(rs);
-			return rs.next();
-
+			
 		}
 		
 	}
